@@ -1,0 +1,176 @@
+@font-face {
+    font-family: "Bebas Neue";
+    src: url("../fonts/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("../fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@media (min-width: 768px) {
+    .burger {
+        display: none;
+    }
+
+    nav {
+        position: static;
+        max-height: none;
+        flex-direction: row;
+        width: auto;
+        background: none;
+        gap: 1rem;
+    }
+
+    #navbar{
+        width: 100%;
+        justify-content: space-around;
+        padding: 0% 20% 0% 20%;
+    }
+
+    header {
+        width: 80%;
+        justify-content: space-between;
+        justify-self: center;
+    }
+
+    .logo {
+        width: 30%;
+    }
+
+    nav a {
+        width: auto;
+        padding: 0 1rem;
+    }
+
+    nav {
+        align-items: center;
+    }
+
+    #appointmentbtn_desktop{
+        display: block;
+    }
+
+    .hero {
+        width: 80%;
+        justify-content: space-around;
+        justify-self: center;
+    }
+
+    .hero-right img{
+        width: 50%;
+    }
+
+    .service-track {
+        width: 80%;
+        justify-content: space-around;
+        justify-self: center;
+    }   
+
+    .carousel-btn {
+        display: none;
+    }
+
+    .card{
+        flex: 0 0 20%;
+    }
+
+    .about-container {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .about-left {
+        width: 30%;
+    }
+
+    .about-right {
+        width: 30%;
+    }
+
+    .about-left img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .advertisement{
+        
+    }
+
+    .ad-content{
+        width: 80%;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .ad-content img {
+        width: 20%;
+    }
+
+    .ad-content2 img {
+        width: 20%;
+    }
+
+    .ad-left{
+        width: 50%;
+        justify-self: start;
+    }
+
+    .ad-left2 {
+        width: 50%;
+        justify-self: start;
+    }
+
+    .testimonial-track{
+        width: 80%;
+        justify-content: center;
+        justify-self: center;
+    }
+
+    .testimonial-card{
+        flex: 0 0 20%;
+    }
+
+    .t-btn{
+        display: none;
+    }
+
+    .gallery-container img {
+        width: 20%;
+    }
+
+    .map-container{
+        width:100%;
+        height:300px;
+    }
+
+    .contact-form{
+        width: 50%;
+        justify-self: center;
+    }
+
+    footer img {
+        width: 10%;
+    }
+
+    .top-footer{
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .top-footer p{
+        width: 30%;
+    }
+}

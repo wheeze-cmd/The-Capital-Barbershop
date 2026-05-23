@@ -1,0 +1,106 @@
+@font-face {
+    font-family: "Bebas Neue";
+    src: url("../fonts/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("../fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --black: #000000;
+    --softblack: #1c1c1c;
+    --gray: #bfbfbf;
+    --white: #ffffff;
+    --red: #c1121f;
+    --blue: #1d3557;
+    --gold:#c9a227;
+    --hover-primary: #850c15;
+    --active-primary: #cc3d48;
+    --hover-tertiary: #122035;
+    --active-tertiary: #4570ab;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    width: 8rem;
+    text-decoration: none;
+}
+
+.button a {
+    text-decoration: none;
+    font-weight: 400;
+    border-radius: 3px;
+}
+
+.button img {
+    width: 1rem;
+    margin-left: 0.5rem;
+}
+
+#appointmentbtn_desktop {
+    background: var(--red);
+    color: var(--white);
+    display: none;
+}
+
+#primary_button{
+    background: var(--red);
+    color: var(--white);
+}
+
+#primary_button:hover{
+    background-color: var(--hover-primary);
+    color: var(--white);
+}
+
+#primary_button:active{
+    background-color: var(--active-primary);
+    color: var(--hover-primary);
+}
+
+#secondary_button {
+    background: var(--black);
+    color: var(--gold);
+    border: var(--gold) 1px solid;
+    text-decoration: none;
+}
+
+#secondary_button:hover{
+    color: var(--white);
+}
+
+#secondary_button:active{
+    color: var(--gold);
+    border: var(--white) 1px solid;
+}
+
+
+#tertiary_button{
+    background-color: var(--blue);
+}
+
+#tertiary_button:hover{
+    background-color: var(--hover-tertiary);
+}
+
+#tertiary_button:active{
+    color: var(--hover-tertiary);
+    background-color: var(--active-tertiary);
+}
