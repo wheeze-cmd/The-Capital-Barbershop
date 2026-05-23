@@ -65,12 +65,12 @@
     color: var(--white);
 }
 
-#primary_button:hover{
+#primary_button:hover, #appointmentbtn_desktop:hover{
     background-color: var(--hover-primary);
     color: var(--white);
 }
 
-#primary_button:active{
+#primary_button:active, #appointmentbtn_desktop:active{
     background-color: var(--active-primary);
     color: var(--hover-primary);
 }
