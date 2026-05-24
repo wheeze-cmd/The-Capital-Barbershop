@@ -7,9 +7,16 @@ const form = document.getElementById("appointmentForm");
 
 const dateInput = document.getElementById("appointment_date");
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date();
 
-dateInput.min = today;
+const localDate =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
+
+dateInput.min = localDate;
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
