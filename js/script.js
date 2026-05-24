@@ -33,7 +33,7 @@ navLinks.forEach(link => {
 
 emailjs.init("eRblkefiacedFO21V");
 
-const form = document.getElementById("contact-form");
+const form = document.querySelector(".contact-form");
 
 form.addEventListener("submit", function(e) {
 
