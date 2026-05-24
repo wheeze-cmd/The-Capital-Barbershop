@@ -3,10 +3,6 @@
     {
       "source": "/terrago/:match*",
       "destination": "https://portfolio-website-kappa-two-44.vercel.app/:match*"
-    },
-    {
-      "source": "/thecapitalbarbershop/:match*",
-      "destination": "https://the-capital-barbershop.vercel.app/:match*"
     }
   ]
 }
