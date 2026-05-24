@@ -34,7 +34,7 @@ form.addEventListener("submit", async (e) => {
     const { data: existing, error: checkError } = await client
         .from("appointment")
         .select("*")
-        .eq("preferred_time", normalizedTime);
+        .eq("preferred_time", normalizedTime.slice(0, 16));
 
     if (checkError) {
         console.log(checkError);
