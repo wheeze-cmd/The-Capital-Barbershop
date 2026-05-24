@@ -8,24 +8,25 @@ const form = document.getElementById("appointmentForm");
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // ⏰ GET SELECTED DATETIME
-    const selectedTime = document.getElementById("preferred_time").value;
+    // 📅 GET DATE + TIME
+    const selectedDate = document.getElementById("appointment_date").value;
+    const selectedTime = document.getElementById("appointment_time").value;
 
-    // ⏰ EXTRACT HOUR
-    const hour = new Date(selectedTime).getHours();
-
-    // 🚫 ALLOW ONLY 12PM–7PM
-    if (hour < 12 || hour > 18) {
-        alert("Please select a time between 12PM and 6PM only");
+    // 🚫 CHECK IF EMPTY
+    if (!selectedDate || !selectedTime) {
+        alert("Please select a valid date and time");
         return;
     }
+
+    // 🔥 COMBINE DATE + TIME
+    const normalizedTime = `${selectedDate}T${selectedTime}`;
 
     // 📦 FORM DATA
     const data = {
         name: document.getElementById("name").value,
         contact: document.getElementById("contact").value,
         service: document.getElementById("service").value,
-        preferred_time: selectedTime,
+        preferred_time: normalizedTime,
         note: document.getElementById("note").value
     };
 
@@ -33,7 +34,7 @@ form.addEventListener("submit", async (e) => {
     const { data: existing, error: checkError } = await client
         .from("appointment")
         .select("*")
-        .eq("preferred_time", selectedTime);
+        .eq("preferred_time", normalizedTime);
 
     if (checkError) {
         console.log(checkError);
