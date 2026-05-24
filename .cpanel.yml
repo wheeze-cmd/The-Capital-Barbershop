@@ -1,4 +1,12 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/lowheeze/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+    - export DEPLOYPATH=/home/thecehay/public_html/The-Capital-Barbershop/
+
+    - /bin/mkdir -p $DEPLOYPATH
+
+    - /bin/cp -R css $DEPLOYPATH
+    - /bin/cp -R js $DEPLOYPATH
+    - /bin/cp -R images $DEPLOYPATH
+
+    - /bin/cp *.html $DEPLOYPATH
+    - /bin/cp *.php $DEPLOYPATH
