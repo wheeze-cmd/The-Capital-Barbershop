@@ -17,7 +17,7 @@ form.addEventListener("submit", async (e) => {
     };
 
     const { error } = await client
-        .from("appointments")
+        .from("appointment")
         .insert([data]);
 
     if (error) {
