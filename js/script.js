@@ -31,11 +31,14 @@ navLinks.forEach(link => {
 /*FEEDBACK */
 
 
-emailjs.init("eRblkefiacedFO21V");
+(function () {
+  emailjs.init("eRblkefiacedFO21V"); // from EmailJS dashboard
+})();
+
 
 const form = document.querySelector(".contact-form");
 
-form.addEventListener("submit", function(e) {
+form.addEventListener("submit", (e) => {
 
     e.preventDefault();
 
