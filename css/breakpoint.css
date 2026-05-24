@@ -62,6 +62,13 @@
         display: block;
     }
 
+    #about,
+    #services,
+    #gallery,
+    #contact {
+        scroll-margin-top: 7.2rem;
+    }
+
     .hero {
         width: 80%;
         justify-content: space-around;
@@ -86,26 +93,22 @@
         flex: 0 0 20%;
     }
 
-    .about-container {
+    .about-container, .barber-container{
         flex-direction: row;
         justify-content: center;
     }
 
-    .about-left {
+    .about-left{
         width: 30%;
     }
 
-    .about-right {
+    .about-right{
         width: 30%;
     }
 
-    .about-left img {
+    .about-left video{
         width: 100%;
         object-fit: cover;
-    }
-
-    .advertisement{
-        
     }
 
     .ad-content{
@@ -173,4 +176,28 @@
     .top-footer p{
         width: 30%;
     }
+
+    /*ABOUT PAGE*/
+    
+    .about-add{
+        width: 50%;
+    }
+
+    .barber-container {
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .barber-left img {
+        border-radius: 50%;
+    }
+
+    .barber-left {
+        width: 15%;
+    }
+
+    .barber-right {
+        width: 40%;
+    }
+
 }

@@ -73,6 +73,7 @@
 #primary_button:active, #appointmentbtn_desktop:active{
     background-color: var(--active-primary);
     color: var(--hover-primary);
+    transform: translateY(2px);
 }
 
 #secondary_button {
@@ -89,8 +90,8 @@
 #secondary_button:active{
     color: var(--gold);
     border: var(--white) 1px solid;
+    transform: translateY(2px);
 }
-
 
 #tertiary_button{
     background-color: var(--blue);
@@ -103,4 +104,5 @@
 #tertiary_button:active{
     color: var(--hover-tertiary);
     background-color: var(--active-tertiary);
+    transform: translateY(2px);
 }

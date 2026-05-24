@@ -17,4 +17,13 @@ prevBtn.addEventListener('click', () => {
     });
 });
 
+const navLinks = document.querySelectorAll("nav a");
+const burger = document.getElementById("burger");
 
+navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+        setTimeout(() => {
+            burger.checked = false;
+        }, 100);
+    });
+});
