@@ -5,6 +5,12 @@ const client = supabase.createClient(supabaseUrl, supabaseKey);
 
 const form = document.getElementById("appointmentForm");
 
+const dateInput = document.getElementById("appointment_date");
+
+const today = new Date().toISOString().split("T")[0];
+
+dateInput.min = today;
+
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
