@@ -42,7 +42,7 @@ form.addEventListener("submit", function(e) {
     emailjs.sendForm(
         "service_jlv8fdd",
         "template_9ertped",
-        this
+        form
     )
     .then(() => {
 
