@@ -27,3 +27,35 @@ navLinks.forEach(link => {
         }, 100);
     });
 });
+
+/*FEEDBACK */
+
+
+emailjs.init("eRblkefiacedFO21V");
+
+const form = document.getElementById("contact-form");
+
+form.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    emailjs.sendForm(
+        "service_jlv8fdd",
+        "template_9ertped",
+        this
+    )
+    .then(() => {
+
+        alert("Feedback sent successfully!");
+        form.reset();
+
+    })
+    .catch((error) => {
+
+        console.log(error);
+        alert("Failed to send feedback.");
+
+    });
+
+});
+
