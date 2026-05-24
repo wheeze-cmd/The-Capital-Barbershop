@@ -272,7 +272,7 @@ header {
 .about-left{
     width: 100%;
     height: 200px;
-    border: var(--softblack) 1px solid;
+    border: var(--gold) 1px solid;
 }
 
 .about-left iframe{
