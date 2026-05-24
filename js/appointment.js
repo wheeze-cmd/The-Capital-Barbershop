@@ -21,8 +21,8 @@ form.addEventListener("submit", async (e) => {
         .insert([data]);
 
     if (error) {
-        alert("Booking failed 😢");
-        console.log(error);
+        console.log("Supabase error:", error);
+        alert(error.message);
     } else {
         alert("Booked successfully 🎉");
         form.reset();
