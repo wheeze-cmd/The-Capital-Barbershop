@@ -33,7 +33,108 @@
     </header>
     
     <main>
-        
+        <section class="appointment" id="appointment">
+            <header class="section-header">
+                <div class="section-title">
+                    <h6>THE CAPITAL</h6>
+                    <h2>APPOINTMENT</h2>
+                </div>
+                <div class="gradient-line"></div>
+                <h4>One step closer to greatness.</h4>
+            </header>
+
+            <form class="contact-form" action="php/book.php" method="POST">
+
+                <div class="input">
+
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input 
+                            type="text"
+                            name="fullname"
+                            id="fullname"
+                            placeholder="Your name"
+                            class="input-field"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Contact Number</label>
+                        <input 
+                            type="tel"
+                            name="phone"
+                            id="phone"
+                            placeholder="+63 912 345 6789"
+                            class="input-field"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <div class="input">
+
+                    <div class="form-group">
+                        <label for="service">Service</label>
+
+                        <select 
+                            name="service"
+                            id="service"
+                            class="input-field"
+                            required
+                        >
+                            <option value="">Select a service</option>
+                            <option value="Haircut">Haircut</option>
+                            <option value="Beard Shave">Beard Shave</option>
+                            <option value="Combo">Combo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time">Preferred Time</label>
+
+                        <select
+                            name="appointment_time"
+                            id="time"
+                            class="input-field"
+                            required
+                        >
+                            <option value="">Select time</option>
+                            <option>12:00 PM</option>
+                            <option>1:00 PM</option>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group message-group">
+                    <label for="notes">Notes</label>
+
+                    <textarea
+                        name="notes"
+                        id="notes"
+                        placeholder="Special requests or preferred style..."
+                        class="message-field"
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="button" id="primary_button">
+
+                    Book
+
+                    <img src="images/svg/right_arrow.svg">
+
+                </button>
+
+            </form>
+
+        </section>
     </main>
     <footer>
         <div class="top-footer">
