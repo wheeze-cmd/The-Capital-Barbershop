@@ -4,12 +4,24 @@
       "source": "/terrago",
       "destination": "/terrago/index.html",
       "permanent": false
+    },
+    {
+      "source": "/felix",
+      "destination": "/felix/index.html",
+      "permanent": false
     }
   ],
   "rewrites": [
     {
       "source": "/terrago/:path*",
       "destination": "https://portfolio-website-kappa-two-44.vercel.app/:path*"
+    },
+    {
+      "source": "/felix/:path*",
+      "destination": "https://live-portfolio-drab.vercel.app/:path*"
     }
   ]
 }
+
+
+
