@@ -24,6 +24,10 @@
         display: none;
     }
 
+    body{
+        overflow-x: hidden;
+    }
+
     nav {
         position: static;
         max-height: none;
