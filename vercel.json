@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/terrago/:match*",
-      "destination": "https://portfolio-website-kappa-two-44.vercel.app/:match*"
+      "source": "/terrago",
+      "destination": "https://portfolio-website-kappa-two-44.vercel.app"
+    },
+    {
+      "source": "/terrago/:path*",
+      "destination": "https://portfolio-website-kappa-two-44.vercel.app/:path*"
     }
   ]
 }
