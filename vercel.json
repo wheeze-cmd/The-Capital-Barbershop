@@ -1,9 +1,12 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/terrago",
-      "destination": "https://portfolio-website-kappa-two-44.vercel.app/index.html"
-    },
+      "destination": "/terrago/index.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
     {
       "source": "/terrago/:path*",
       "destination": "https://portfolio-website-kappa-two-44.vercel.app/:path*"
