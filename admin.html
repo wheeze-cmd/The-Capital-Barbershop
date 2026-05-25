@@ -1204,9 +1204,9 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 // CONFIG & STATE
 // ═══════════════════════════════════════════════════
 const DEFAULT_CONFIG = {
-  url:   '',
-  key:   '',
-  table: 'appointments',
+  url:   'https://ejnbylyuzzyrmcndflxk.supabase.co',
+  key:   'sb_publishable_1yW9v4QxoUpKiZV6-HTFmg_hacS2CzP',
+  table: 'appointment',
   adminUser: 'admin',
   adminPass: 'capital2026'
 };
@@ -1241,7 +1241,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateTopbarDate, 60000);
   document.getElementById('cfg-url').value   = CONFIG.url   || '';
   document.getElementById('cfg-key').value   = CONFIG.key   || '';
-  document.getElementById('cfg-table').value = CONFIG.table || 'appointments';
+  document.getElementById('cfg-table').value = CONFIG.table || 'appointment';
   document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
   document.getElementById('login-user').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
 });
