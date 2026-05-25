@@ -3,1608 +3,1112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — The Capital Barbershop</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@1,400;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Admin Dashboard — The Capital</title>
 <style>
-/* ── VARIABLES ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@0;1&family=Poppins:wght@400;600;700&display=swap');
+
 :root {
-  --black:      #000000;
-  --softblack:  #1c1c1c;
-  --card-bg:    #141414;
-  --gray:       #bfbfbf;
-  --white:      #ffffff;
-  --red:        #c1121f;
-  --hover-red:  #850c15;
-  --blue:       #1d3557;
-  --gold:       #c9a227;
-  --gold-dim:   rgba(201,162,39,0.15);
-  --gold-glow:  rgba(201,162,39,0.35);
-  --border:     rgba(201,162,39,0.3);
-
-  --font-display: "Bebas Neue", sans-serif;
-  --font-serif:   "Playfair Display", serif;
-  --font-body:    "Poppins", sans-serif;
-
-  --sidebar-w: 240px;
-  --topbar-h:  60px;
+    --black: #000000;
+    --softblack: #1c1c1c;
+    --gray: #bfbfbf;
+    --white: #ffffff;
+    --red: #c1121f;
+    --blue: #1d3557;
+    --gold: #c9a227;
+    --hover-primary: #850c15;
+    --active-primary: #cc3d48;
+    --font-primary: "Bebas Neue", sans-serif;
+    --font-secondary: "Playfair Display", serif;
+    --font-body: "Poppins", sans-serif;
 }
 
-/* ── RESET ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
 body {
-  background: var(--black);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 14px;
-  min-height: 100vh;
-  overflow-x: hidden;
+    background-color: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ── LOGIN SCREEN ──────────────────────────────────────── */
-#login-screen {
-  position: fixed; inset: 0;
-  background: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 1rem;
-}
-
-.login-card {
-  width: 100%;
-  max-width: 400px;
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2.5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.login-card .brand { text-align: center; }
-.login-card .brand h6 {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 11px;
-  color: var(--red);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 0.25rem;
-}
-.login-card .brand h2 {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  color: var(--white);
-  letter-spacing: 2px;
-}
-.login-card .brand .gradient-line {
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(to right, var(--gold), transparent);
-  margin: 0.5rem auto 0;
-}
-
-.login-field { display: flex; flex-direction: column; gap: 0.4rem; }
-.login-field label {
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  color: var(--gray);
-}
-.login-field input {
-  background: var(--card-bg);
-  border: none;
-  border-bottom: 2px solid var(--red);
-  border-radius: 6px;
-  padding: 0.75rem 0.75rem;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.login-field input:focus { border-bottom-color: var(--gold); }
-
-.login-error {
-  color: var(--red);
-  font-size: 12px;
-  font-family: var(--font-body);
-  display: none;
-}
-
-/* ── LAYOUT ────────────────────────────────────────────── */
-#app { display: none; min-height: 100vh; }
-
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  top: 0; left: 0;
-  width: var(--sidebar-w);
-  height: 100vh;
-  background: var(--softblack);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  z-index: 200;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-brand {
-  padding: 1.4rem 1.2rem 1rem;
-  border-bottom: 1px solid var(--border);
-}
-.sidebar-brand h6 {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--red);
-  text-transform: uppercase;
-}
-.sidebar-brand h2 {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  letter-spacing: 1.5px;
-  color: var(--white);
-  line-height: 1.1;
-}
-.sidebar-brand p {
-  font-size: 10px;
-  color: var(--gold);
-  font-family: var(--font-body);
-  font-style: italic;
-  margin-top: 2px;
-}
-
-.sidebar-nav {
-  flex: 1;
-  padding: 1rem 0;
-  overflow-y: auto;
-}
-
-.nav-label {
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--gray);
-  opacity: 0.5;
-  padding: 1rem 1.2rem 0.4rem;
-  text-transform: uppercase;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.65rem 1.2rem;
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 1px;
-  color: var(--gray);
-  transition: background 0.15s, color 0.15s;
-  border-left: 3px solid transparent;
-  text-decoration: none;
-}
-.nav-item:hover { background: var(--gold-dim); color: var(--white); }
-.nav-item.active {
-  background: var(--gold-dim);
-  color: var(--gold);
-  border-left-color: var(--gold);
-}
-.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-.sidebar-footer {
-  padding: 1rem 1.2rem;
-  border-top: 1px solid var(--border);
-}
-.sidebar-footer button {
-  width: 100%;
-  background: transparent;
-  border: 1px solid var(--red);
-  border-radius: 4px;
-  color: var(--red);
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.sidebar-footer button:hover { background: var(--red); color: var(--white); }
-
-/* TOPBAR */
-.topbar {
-  position: fixed;
-  top: 0;
-  left: var(--sidebar-w);
-  right: 0;
-  height: var(--topbar-h);
-  background: var(--black);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.5rem;
-  z-index: 100;
-  transition: left 0.3s;
+/* ─── TOPBAR ─── */
+#topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--black);
+    border-bottom: 1px solid var(--softblack);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
 }
 
 .topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
-#menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
+.topbar-left .brand {
+    font-family: var(--font-primary);
+    font-size: 1.4rem;
+    color: var(--white);
+    letter-spacing: 1px;
+    line-height: 1;
 }
-#menu-toggle svg { width: 22px; height: 22px; color: var(--white); }
 
-.topbar-title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  letter-spacing: 2px;
-  color: var(--white);
+.topbar-left .subtitle {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    font-size: 0.75rem;
+    color: var(--gold);
 }
 
 .topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
 }
 
-.topbar-date {
-  font-size: 11px;
-  color: var(--gray);
-  font-family: var(--font-body);
+.badge-live {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--gray);
 }
 
-.badge-admin {
-  background: var(--gold-dim);
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  padding: 2px 10px;
-  border-radius: 3px;
+.dot-live {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 1.8s infinite;
 }
 
-/* MAIN CONTENT */
-.main-content {
-  margin-left: var(--sidebar-w);
-  margin-top: var(--topbar-h);
-  padding: 1.5rem;
-  min-height: calc(100vh - var(--topbar-h));
-  transition: margin-left 0.3s;
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
 }
 
-/* ── VIEWS ─────────────────────────────────────────────── */
-.view { display: none; }
-.view.active { display: block; }
+.btn-logout {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    background: none;
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-logout:hover { background: var(--red); color: var(--white); }
 
-/* ── SECTION HEADER ────────────────────────────────────── */
-.section-header-dash {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+/* ─── LOGIN OVERLAY ─── */
+#loginOverlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.section-header-dash .titles h6 {
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: var(--red);
-  text-transform: uppercase;
-  margin-bottom: 2px;
+
+.login-box {
+    background: var(--softblack);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 2.5rem 2rem;
+    width: 90%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 }
-.section-header-dash .titles h2 {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  letter-spacing: 2px;
-  color: var(--white);
-  line-height: 1;
+
+.login-box h2 {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    color: var(--white);
+    letter-spacing: 2px;
 }
+
+.login-box h4 {
+    font-family: var(--font-secondary);
+    font-style: italic;
+    color: var(--gray);
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-top: -0.8rem;
+}
+
 .gradient-line {
-  width: 80px; height: 2px;
-  background: linear-gradient(to right, var(--gold), transparent);
-  margin-top: 6px;
+    width: 120px; height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
 }
 
-/* ── STAT CARDS ────────────────────────────────────────── */
+.login-box label {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--white);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.login-input {
+    width: 100%;
+    background: var(--black);
+    border: none;
+    border-bottom: 2px solid var(--red);
+    border-radius: 6px;
+    padding: 0.7rem 0.8rem;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.login-input:focus { border-color: var(--gold); }
+
+.btn-login {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    align-self: flex-start;
+}
+.btn-login:hover { background: var(--hover-primary); }
+.btn-login:active { transform: translateY(2px); }
+
+#loginError {
+    font-size: 0.78rem;
+    color: var(--red);
+    font-family: var(--font-body);
+    display: none;
+}
+
+/* ─── MAIN LAYOUT ─── */
+#app { display: flex; flex: 1; }
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+    width: 220px;
+    min-height: calc(100vh - 56px);
+    background: var(--softblack);
+    border-right: 1px solid #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    gap: 0.2rem;
+    flex-shrink: 0;
+}
+
+.sidebar-section-label {
+    font-family: var(--font-primary);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    padding: 0.8rem 1.2rem 0.3rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--gray);
+    text-decoration: none;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sidebar-link:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+.sidebar-link.active { color: var(--white); border-left-color: var(--red); background: rgba(193,18,31,0.08); }
+
+.sidebar-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ─── MOBILE BOTTOM NAV ─── */
+#bottomNav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--softblack);
+    border-top: 1px solid #2a2a2a;
+    z-index: 10;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+}
+
+.bnav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-primary);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    transition: color 0.2s;
+}
+.bnav-item svg { width: 20px; height: 20px; }
+.bnav-item.active { color: var(--gold); }
+
+/* ─── CONTENT ─── */
+#content { flex: 1; padding: 1.5rem 1.2rem 5rem; overflow-x: hidden; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── SECTION HEADER ─── */
+.dash-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.dash-header h2 {
+    font-family: var(--font-primary);
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 2px;
+}
+
+.dash-header h6 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--red);
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+}
+
+.dash-header .gradient-line { margin-bottom: 0.5rem; }
+
+/* ─── STAT CARDS ─── */
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .stat-card {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.2rem 1.2rem 1rem;
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.2s, transform 0.2s;
+    background: var(--softblack);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: border-color 0.2s, transform 0.2s;
 }
-.stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 24px var(--gold-glow);
-}
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(to right, var(--gold), transparent);
-}
-.stat-card.red::before { background: linear-gradient(to right, var(--red), transparent); }
-.stat-card.blue::before { background: linear-gradient(to right, var(--blue), transparent); }
+.stat-card:hover { border-color: var(--gold); transform: translateY(-3px); }
 
 .stat-label {
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
+
 .stat-value {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  color: var(--white);
-  line-height: 1;
+    font-family: var(--font-primary);
+    font-size: 2.2rem;
+    color: var(--white);
+    line-height: 1;
 }
+
 .stat-sub {
-  font-family: var(--font-body);
-  font-size: 10px;
-  color: var(--gold);
-  margin-top: 4px;
-  font-style: italic;
-}
-.stat-icon {
-  position: absolute;
-  bottom: 0.8rem; right: 1rem;
-  opacity: 0.08;
-  font-family: var(--font-display);
-  font-size: 3.5rem;
-  color: var(--white);
-  line-height: 1;
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-family: var(--font-body);
 }
 
-/* ── TABLE ─────────────────────────────────────────────── */
-.table-card {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.table-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.2rem;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-.table-toolbar h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  letter-spacing: 1.5px;
-  color: var(--white);
-  font-style: normal;
-}
-
-.toolbar-actions {
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
+/* ─── TOOLBAR ─── */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+    align-items: center;
 }
 
 .search-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    background: var(--softblack);
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 180px;
+    max-width: 320px;
 }
-.search-wrap svg {
-  position: absolute;
-  left: 8px;
-  width: 14px; height: 14px;
-  color: var(--gray);
-  pointer-events: none;
-}
-.search-wrap input {
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 5px;
-  padding: 0.4rem 0.75rem 0.4rem 2rem;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 12px;
-  outline: none;
-  width: 180px;
-  transition: border-color 0.2s;
-}
-.search-wrap input:focus { border-color: var(--gold); }
-.search-wrap input::placeholder { color: var(--gray); opacity: 0.6; }
+.search-wrap svg { color: var(--gray); width: 16px; height: 16px; flex-shrink: 0; }
 
-select.filter-select {
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 5px;
-  padding: 0.4rem 0.75rem;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 12px;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.2s;
+#searchInput {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    width: 100%;
 }
-select.filter-select:focus { border-color: var(--gold); }
-select.filter-select option { background: var(--softblack); }
+#searchInput::placeholder { color: var(--gray); }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0.4rem 0.9rem;
-  border-radius: 4px;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  border: none;
-  transition: background 0.2s, transform 0.1s;
+.filter-select {
+    background: var(--softblack);
+    border: 1px solid #333;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
 }
-.btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--red); color: var(--white); }
-.btn-primary:hover { background: var(--hover-red); }
-.btn-gold { background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold); }
-.btn-gold:hover { background: var(--gold); color: var(--black); }
-.btn-sm { padding: 0.28rem 0.6rem; font-size: 0.72rem; }
-.btn-danger { background: rgba(193,18,31,0.15); border: 1px solid var(--red); color: var(--red); }
-.btn-danger:hover { background: var(--red); color: var(--white); }
+.filter-select option { background: var(--softblack); }
 
-.table-wrap { overflow-x: auto; }
+.btn-refresh {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 3px;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+.btn-refresh:hover { background: var(--hover-primary); }
+.btn-refresh:active { transform: translateY(2px); }
+.btn-refresh svg { width: 14px; height: 14px; }
+
+/* ─── TABLE ─── */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #2a2a2a;
+}
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-body);
-  font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
 }
+
 thead tr {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border);
+    background: var(--softblack);
+    border-bottom: 1px solid var(--gold);
 }
+
 thead th {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 1.5px;
-  color: var(--gold);
-  white-space: nowrap;
-  cursor: pointer;
-  user-select: none;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    padding: 0.9rem 1rem;
+    text-align: left;
+    white-space: nowrap;
 }
-thead th:hover { color: var(--white); }
-thead th.sorted { color: var(--white); }
 
 tbody tr {
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  transition: background 0.15s;
+    border-bottom: 1px solid #1f1f1f;
+    transition: background 0.15s;
 }
 tbody tr:hover { background: rgba(201,162,39,0.05); }
+tbody tr:last-child { border-bottom: none; }
+
 tbody td {
-  padding: 0.75rem 1rem;
-  color: var(--gray);
-  vertical-align: middle;
-}
-tbody td:first-child { color: var(--white); font-weight: 500; }
-
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  font-family: var(--font-body);
-  white-space: nowrap;
-}
-.badge-pending  { background: rgba(201,162,39,0.15); color: var(--gold); border: 1px solid rgba(201,162,39,0.4); }
-.badge-confirmed{ background: rgba(29,53,87,0.4);    color: #6eacda;    border: 1px solid rgba(29,53,87,0.8); }
-.badge-done     { background: rgba(20,80,20,0.3);    color: #7ecb7e;    border: 1px solid rgba(20,80,20,0.6); }
-.badge-cancelled{ background: rgba(193,18,31,0.15);  color: #e25c68;    border: 1px solid rgba(193,18,31,0.4); }
-
-.table-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.2rem;
-  border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.table-info { font-size: 11px; color: var(--gray); font-family: var(--font-body); }
-.pagination { display: flex; gap: 4px; }
-.page-btn {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--gray);
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  width: 28px; height: 28px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s, color 0.15s;
-}
-.page-btn:hover, .page-btn.active { background: var(--gold-dim); color: var(--gold); border-color: var(--gold); }
-
-/* ── MODAL ─────────────────────────────────────────────── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-.modal-overlay.open { display: flex; }
-
-.modal {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 480px;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: modalIn 0.2s ease;
-}
-@keyframes modalIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+    padding: 0.85rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--gray);
+    vertical-align: middle;
 }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 1.4rem 0.8rem;
-  border-bottom: 1px solid var(--border);
+.td-name { color: var(--white); font-weight: 600; }
+.td-contact { font-family: var(--font-body); }
+.td-service {
+    display: inline-block;
+    background: rgba(201,162,39,0.12);
+    border: 1px solid rgba(201,162,39,0.3);
+    color: var(--gold);
+    border-radius: 20px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
 }
-.modal-header h3 {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  letter-spacing: 2px;
-  color: var(--white);
-  font-style: normal;
+.td-time { white-space: nowrap; }
+.td-date-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
 }
-.modal-close {
-  background: none; border: none;
-  color: var(--gray); cursor: pointer; font-size: 1.4rem; line-height: 1;
-  padding: 2px 6px; border-radius: 4px;
-  transition: color 0.2s;
-}
-.modal-close:hover { color: var(--red); }
+.td-date-main { color: var(--white); font-size: 0.82rem; }
+.td-date-time { color: var(--gray); font-size: 0.72rem; }
 
-.modal-body { padding: 1.2rem 1.4rem; }
+.btn-delete {
+    background: none;
+    border: 1px solid #3a1010;
+    color: #c1121f88;
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-delete:hover { background: var(--red); color: var(--white); border-color: var(--red); }
 
-.form-group-m {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 1rem;
-}
-.form-group-m label {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  color: var(--gray);
-}
-.form-group-m input,
-.form-group-m select,
-.form-group-m textarea {
-  background: var(--card-bg);
-  border: none;
-  border-bottom: 2px solid var(--red);
-  border-radius: 6px;
-  padding: 0.65rem 0.75rem;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.2s;
-  width: 100%;
-}
-.form-group-m input:focus,
-.form-group-m select:focus,
-.form-group-m textarea:focus { border-bottom-color: var(--gold); }
-.form-group-m select option { background: var(--softblack); }
-.form-group-m textarea { resize: vertical; min-height: 80px; }
-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
-
-.form-row { display: flex; gap: 1rem; }
-.form-row .form-group-m { flex: 1; }
-
-.modal-footer {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-  padding: 0.8rem 1.4rem 1.2rem;
-  border-top: 1px solid var(--border);
-}
-
-/* ── TOAST ─────────────────────────────────────────────── */
-.toast-wrap {
-  position: fixed;
-  bottom: 1.5rem; right: 1.5rem;
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  pointer-events: none;
-}
-.toast {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--gold);
-  border-radius: 6px;
-  padding: 0.7rem 1.1rem;
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--white);
-  min-width: 220px;
-  max-width: 300px;
-  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
-}
-.toast.error { border-left-color: var(--red); }
-.toast.success { border-left-color: #7ecb7e; }
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes toastOut {
-  to { opacity: 0; transform: translateX(20px); }
-}
-
-/* ── LOADING ───────────────────────────────────────────── */
-.loading-row td {
-  text-align: center;
-  padding: 2rem !important;
-  color: var(--gray) !important;
-  font-family: var(--font-body) !important;
-  font-size: 13px;
-}
-.spinner {
-  display: inline-block;
-  width: 18px; height: 18px;
-  border: 2px solid var(--border);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── SIDEBAR OVERLAY (mobile) ──────────────────────────── */
-.sidebar-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 199;
-}
-
-/* ── DETAIL VIEW ───────────────────────────────────────── */
-.detail-card {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.2rem;
-}
-.detail-item label {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gray);
-  opacity: 0.6;
-  margin-bottom: 4px;
-}
-.detail-item span {
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--white);
-  font-weight: 500;
-}
-
-/* ── EMPTY STATE ───────────────────────────────────────── */
+/* ─── EMPTY/LOADING STATE ─── */
 .empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 0.5rem;
 }
-.empty-state h3 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: 2px;
-  color: var(--gray);
-  font-style: normal;
-  margin-bottom: 0.5rem;
-}
-.empty-state p { font-size: 12px; }
+.empty-state svg { color: #333; width: 40px; height: 40px; }
+.empty-state p { font-family: var(--font-body); color: var(--gray); font-size: 0.85rem; }
 
-/* ── CONFIG SECTION ────────────────────────────────────── */
-.config-card {
-  background: var(--softblack);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.4rem;
-  margin-bottom: 1rem;
-}
-.config-card h4 {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 1.5px;
-  color: var(--gold);
-  margin-bottom: 1rem;
-  font-style: normal;
+.loading-row td {
+    text-align: center;
+    padding: 2rem !important;
+    color: var(--gray) !important;
+    font-style: italic;
 }
 
-/* ── MOBILE BREAKPOINT ─────────────────────────────────── */
+/* ─── PAGINATION ─── */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.pagination span {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--gray);
+}
+
+.page-btn {
+    background: var(--softblack);
+    border: 1px solid #333;
+    color: var(--white);
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.page-btn:hover:not(:disabled) { border-color: var(--gold); }
+.page-btn:disabled { opacity: 0.35; cursor: default; }
+.page-btn.current { border-color: var(--red); color: var(--red); }
+
+/* ─── MODAL ─── */
+#modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#modal.open { display: flex; }
+
+.modal-box {
+    background: var(--softblack);
+    border: 1px solid var(--red);
+    border-radius: 10px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.modal-box h2 {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+.modal-box p { font-family: var(--font-body); font-size: 0.85rem; color: var(--gray); }
+.modal-actions { display: flex; gap: 0.8rem; }
+
+.btn-cancel {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    background: none;
+    border: 1px solid #333;
+    color: var(--gray);
+    border-radius: 3px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-cancel:hover { border-color: var(--white); color: var(--white); }
+
+.btn-confirm-delete {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 3px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-confirm-delete:hover { background: var(--hover-primary); }
+
+/* ─── TOAST ─── */
+#toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.2rem;
+    background: var(--softblack);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--white);
+    z-index: 200;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+    max-width: 280px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─── RESPONSIVE ─── */
 @media (max-width: 767px) {
-  :root { --sidebar-w: 220px; }
-
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar.open {
-    transform: translateX(0);
-    box-shadow: 8px 0 30px rgba(0,0,0,0.6);
-  }
-  .sidebar-overlay.open { display: block; }
-
-  .topbar { left: 0; }
-  #menu-toggle { display: flex; }
-
-  .main-content { margin-left: 0; padding: 1rem; }
-
-  .topbar-date { display: none; }
-
-  .search-wrap input { width: 130px; }
-
-  .form-row { flex-direction: column; gap: 0; }
-
-  table { font-size: 12px; }
-  thead th, tbody td { padding: 0.6rem 0.6rem; }
-
-  /* hide less-important columns on mobile */
-  .col-hide-mobile { display: none; }
-
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .section-header-dash { flex-direction: column; align-items: flex-start; }
+    #sidebar { display: none; }
+    #bottomNav { display: flex; }
+    #content { padding-bottom: 5rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .topbar-left .brand { font-size: 1.1rem; }
 }
 
-/* ── DESKTOP BREAKPOINT ────────────────────────────────── */
 @media (min-width: 768px) {
-  .stats-grid { grid-template-columns: repeat(4, 1fr); }
-  .sidebar { transform: translateX(0) !important; }
+    #content { padding: 2rem 2.5rem; }
+    .stats-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (min-width: 1200px) {
-  .main-content { padding: 2rem 2.5rem; }
+    #sidebar { width: 240px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     LOGIN
-════════════════════════════════════════════════════ -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="brand">
-      <h6>Admin Portal</h6>
-      <h2>THE CAPITAL</h2>
-      <div class="gradient-line"></div>
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+    <div class="login-box">
+        <div>
+            <h6 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--red);font-size:0.75rem;letter-spacing:1px;">THE CAPITAL</h6>
+            <h2>ADMIN LOGIN</h2>
+        </div>
+        <div class="gradient-line"></div>
+        <h4>Restricted access. Authorized personnel only.</h4>
+        <div>
+            <label for="adminUser">Username</label>
+            <input class="login-input" id="adminUser" type="text" placeholder="admin" autocomplete="off">
+        </div>
+        <div>
+            <label for="adminPass">Password</label>
+            <input class="login-input" id="adminPass" type="password" placeholder="••••••••">
+        </div>
+        <span id="loginError">Invalid credentials. Try again.</span>
+        <button class="btn-login" id="btnLogin">ENTER ›</button>
     </div>
-    <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="login-user" placeholder="admin" autocomplete="off">
-    </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="login-pass" placeholder="••••••••" id="login-pass">
-    </div>
-    <p class="login-error" id="login-error">Invalid credentials. Try again.</p>
-    <button class="btn btn-primary" style="width:100%;padding:.65rem;font-size:1rem;letter-spacing:2px;" onclick="attemptLogin()">
-      ENTER
-    </button>
-    <p style="font-size:10px;color:var(--gray);text-align:center;font-family:var(--font-body);">
-      Default: admin / capital2026
-    </p>
-  </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SIDEBAR OVERLAY
-════════════════════════════════════════════════════ -->
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<!-- ═══════════════════════════════════════════════════
-     APP SHELL
-════════════════════════════════════════════════════ -->
-<div id="app">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <h6>Admin Dashboard</h6>
-      <h2>THE CAPITAL</h2>
-      <p>Barbershop Management</p>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-label">Main</div>
-      <a class="nav-item active" data-view="dashboard" onclick="switchView('dashboard',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        OVERVIEW
-      </a>
-      <a class="nav-item" data-view="appointments" onclick="switchView('appointments',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        APPOINTMENTS
-      </a>
-      <div class="nav-label">Settings</div>
-      <a class="nav-item" data-view="config" onclick="switchView('config',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        SETTINGS
-      </a>
-    </nav>
-    <div class="sidebar-footer">
-      <button onclick="doLogout()">SIGN OUT</button>
-    </div>
-  </aside>
-
-  <!-- TOPBAR -->
-  <header class="topbar">
+<!-- TOP BAR -->
+<header id="topbar">
     <div class="topbar-left">
-      <button id="menu-toggle" onclick="toggleSidebar()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <span class="topbar-title" id="topbar-title">OVERVIEW</span>
+        <span class="brand">THE CAPITAL</span>
+        <span class="subtitle">Admin Dashboard</span>
     </div>
     <div class="topbar-right">
-      <span class="topbar-date" id="topbar-date"></span>
-      <span class="badge-admin">ADMIN</span>
+        <div class="badge-live"><div class="dot-live"></div><span>Live</span></div>
+        <button class="btn-logout" id="btnLogout">LOGOUT</button>
     </div>
-  </header>
+</header>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
+<!-- MAIN -->
+<div id="app">
 
-    <!-- ── DASHBOARD VIEW ───────────────────────────── -->
-    <div class="view active" id="view-dashboard">
-      <div class="section-header-dash">
-        <div class="titles">
-          <h6>The Capital</h6>
-          <h2>OVERVIEW</h2>
-          <div class="gradient-line"></div>
-        </div>
-        <button class="btn btn-gold" onclick="loadAllData()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.09-4"/></svg>
-          REFRESH
-        </button>
-      </div>
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+        <span class="sidebar-section-label">OVERVIEW</span>
+        <a class="sidebar-link active" data-page="appointments" onclick="switchPage('appointments')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Appointments
+        </a>
 
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Bookings</div>
-          <div class="stat-value" id="stat-total">—</div>
-          <div class="stat-sub">all time</div>
-          <div class="stat-icon">✂</div>
-        </div>
-        <div class="stat-card red">
-          <div class="stat-label">Today</div>
-          <div class="stat-value" id="stat-today">—</div>
-          <div class="stat-sub">appointments</div>
-          <div class="stat-icon">📅</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Pending</div>
-          <div class="stat-value" id="stat-pending">—</div>
-          <div class="stat-sub">awaiting confirmation</div>
-          <div class="stat-icon">⏳</div>
-        </div>
-        <div class="stat-card blue">
-          <div class="stat-label">This Week</div>
-          <div class="stat-value" id="stat-week">—</div>
-          <div class="stat-sub">appointments</div>
-          <div class="stat-icon">📈</div>
-        </div>
-      </div>
+        <span class="sidebar-section-label">MANAGEMENT</span>
+        <a class="sidebar-link" data-page="analytics" onclick="switchPage('analytics')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+            Analytics
+        </a>
+    </aside>
 
-      <!-- Recent bookings preview -->
-      <div class="table-card">
-        <div class="table-toolbar">
-          <h3>RECENT APPOINTMENTS</h3>
-          <button class="btn btn-primary btn-sm" onclick="switchView('appointments', document.querySelector('[data-view=appointments]'))">VIEW ALL</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th class="col-hide-mobile">Service</th>
-                <th>Date</th>
-                <th class="col-hide-mobile">Time</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="recent-tbody">
-              <tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <!-- CONTENT -->
+    <main id="content">
 
-    <!-- ── APPOINTMENTS VIEW ─────────────────────────── -->
-    <div class="view" id="view-appointments">
-      <div class="section-header-dash">
-        <div class="titles">
-          <h6>The Capital</h6>
-          <h2>APPOINTMENTS</h2>
-          <div class="gradient-line"></div>
-        </div>
-        <button class="btn btn-primary" onclick="openAddModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          ADD NEW
-        </button>
-      </div>
-
-      <div class="table-card">
-        <div class="table-toolbar">
-          <h3>ALL BOOKINGS</h3>
-          <div class="toolbar-actions">
-            <div class="search-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="search-input" placeholder="Search name..." oninput="filterTable()">
+        <!-- APPOINTMENTS PAGE -->
+        <section class="page active" id="page-appointments">
+            <div class="dash-header">
+                <div>
+                    <h6>THE CAPITAL</h6>
+                    <h2>APPOINTMENTS</h2>
+                </div>
+                <div>
+                    <div class="gradient-line"></div>
+                    <p style="font-family:'Playfair Display',serif;font-style:italic;color:var(--gray);font-size:0.85rem;margin-top:0.3rem;">Manage your bookings</p>
+                </div>
             </div>
-            <select class="filter-select" id="filter-service" onchange="filterTable()">
-              <option value="">All Services</option>
-              <option value="Haircut">Haircut</option>
-              <option value="Beard Shave">Beard Shave</option>
-              <option value="Combo">Combo</option>
-            </select>
-            <select class="filter-select" id="filter-status" onchange="filterTable()">
-              <option value="">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="done">Done</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <button class="btn btn-gold btn-sm" onclick="loadAllData()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.09-4"/></svg>
-              REFRESH
-            </button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th onclick="sortTable('name')">NAME ↕</th>
-                <th onclick="sortTable('contact')" class="col-hide-mobile">CONTACT ↕</th>
-                <th onclick="sortTable('service')">SERVICE ↕</th>
-                <th onclick="sortTable('appointment_date')">DATE ↕</th>
-                <th onclick="sortTable('appointment_time')" class="col-hide-mobile">TIME ↕</th>
-                <th>STATUS</th>
-                <th>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody id="appointments-tbody">
-              <tr class="loading-row"><td colspan="7"><span class="spinner"></span>Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="table-footer">
-          <span class="table-info" id="table-info">Loading...</span>
-          <div class="pagination" id="pagination"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ── CONFIG VIEW ───────────────────────────────── -->
-    <div class="view" id="view-config">
-      <div class="section-header-dash">
-        <div class="titles">
-          <h6>The Capital</h6>
-          <h2>SETTINGS</h2>
-          <div class="gradient-line"></div>
-        </div>
-      </div>
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Total Bookings</span>
+                    <span class="stat-value" id="statTotal">—</span>
+                    <span class="stat-sub">All time</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Today</span>
+                    <span class="stat-value" id="statToday">—</span>
+                    <span class="stat-sub">Scheduled today</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">This Week</span>
+                    <span class="stat-value" id="statWeek">—</span>
+                    <span class="stat-sub">Upcoming 7 days</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Top Service</span>
+                    <span class="stat-value" id="statTop" style="font-size:1.3rem;">—</span>
+                    <span class="stat-sub">Most booked</span>
+                </div>
+            </div>
 
-      <div class="config-card">
-        <h4>SUPABASE CONFIGURATION</h4>
-        <div class="form-group-m">
-          <label>Supabase Project URL</label>
-          <input type="text" id="cfg-url" placeholder="https://xxxx.supabase.co">
-        </div>
-        <div class="form-group-m">
-          <label>Anon / Public Key</label>
-          <input type="text" id="cfg-key" placeholder="eyJhbGci...">
-        </div>
-        <div class="form-group-m">
-          <label>Table Name</label>
-          <input type="text" id="cfg-table" placeholder="appointments">
-        </div>
-        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.5rem;">
-          <button class="btn btn-primary" onclick="saveConfig()">SAVE CONFIG</button>
-          <button class="btn btn-gold" onclick="testConnection()">TEST CONNECTION</button>
-        </div>
-      </div>
+            <!-- TOOLBAR -->
+            <div class="toolbar">
+                <div class="search-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input id="searchInput" placeholder="Search name or contact…" oninput="filterTable()">
+                </div>
+                <select class="filter-select" id="serviceFilter" onchange="filterTable()">
+                    <option value="">All Services</option>
+                    <option value="Haircut">Haircut</option>
+                    <option value="Beard Shave">Beard Shave</option>
+                    <option value="Combo">Combo</option>
+                </select>
+                <select class="filter-select" id="dateFilter" onchange="filterTable()">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="upcoming">Upcoming</option>
+                </select>
+                <button class="btn-refresh" onclick="fetchAppointments()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                    REFRESH
+                </button>
+            </div>
 
-      <div class="config-card">
-        <h4>ADMIN CREDENTIALS</h4>
-        <div class="form-row">
-          <div class="form-group-m">
-            <label>Username</label>
-            <input type="text" id="cfg-admin-user" placeholder="admin">
-          </div>
-          <div class="form-group-m">
-            <label>New Password</label>
-            <input type="password" id="cfg-admin-pass" placeholder="••••••••">
-          </div>
-        </div>
-        <button class="btn btn-primary" style="margin-top:.5rem" onclick="saveAdminCreds()">UPDATE CREDENTIALS</button>
-      </div>
-    </div>
+            <!-- TABLE -->
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Service</th>
+                            <th>Date &amp; Time</th>
+                            <th>Notes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="loading-row"><td colspan="7">Loading appointments…</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-  </main>
+            <!-- PAGINATION -->
+            <div class="pagination" id="pagination"></div>
+        </section>
+
+        <!-- ANALYTICS PAGE -->
+        <section class="page" id="page-analytics">
+            <div class="dash-header">
+                <div>
+                    <h6>THE CAPITAL</h6>
+                    <h2>ANALYTICS</h2>
+                </div>
+                <div>
+                    <div class="gradient-line"></div>
+                    <p style="font-family:'Playfair Display',serif;font-style:italic;color:var(--gray);font-size:0.85rem;margin-top:0.3rem;">Booking insights</p>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-bottom:2rem;">
+                <div class="stat-card">
+                    <span class="stat-label">Haircut</span>
+                    <span class="stat-value" id="aHaircut">—</span>
+                    <span class="stat-sub">Total bookings</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Beard Shave</span>
+                    <span class="stat-value" id="aBeard">—</span>
+                    <span class="stat-sub">Total bookings</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Combo</span>
+                    <span class="stat-value" id="aCombo">—</span>
+                    <span class="stat-sub">Total bookings</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Peak Hour</span>
+                    <span class="stat-value" id="aPeak" style="font-size:1.3rem;">—</span>
+                    <span class="stat-sub">Most booked slot</span>
+                </div>
+            </div>
+
+            <!-- BAR CHART -->
+            <div style="background:var(--softblack);border:1px solid #2a2a2a;border-radius:10px;padding:1.5rem;">
+                <h5 style="font-family:var(--font-primary);font-size:1.1rem;letter-spacing:1px;margin-bottom:1.2rem;color:var(--white);">BOOKINGS BY SERVICE</h5>
+                <div id="barChart" style="display:flex;flex-direction:column;gap:0.8rem;"></div>
+            </div>
+        </section>
+
+    </main>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MODAL — Add / Edit Appointment
-════════════════════════════════════════════════════ -->
-<div class="modal-overlay" id="modal-appt">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-title">ADD APPOINTMENT</h3>
-      <button class="modal-close" onclick="closeModal('modal-appt')">✕</button>
+<!-- BOTTOM NAV (mobile) -->
+<nav id="bottomNav">
+    <div class="bnav-item active" onclick="switchPage('appointments')" data-bnav="appointments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        BOOKINGS
     </div>
-    <div class="modal-body">
-      <input type="hidden" id="modal-id">
-      <div class="form-row">
-        <div class="form-group-m">
-          <label>Full Name *</label>
-          <input type="text" id="m-name" placeholder="Your name" pattern="[A-Za-z\s]+" required>
-        </div>
-        <div class="form-group-m">
-          <label>Contact Number *</label>
-          <input type="tel" id="m-contact" placeholder="09XXXXXXXXX" maxlength="11" required>
-        </div>
-      </div>
-      <div class="form-group-m">
-        <label>Service *</label>
-        <select id="m-service" required>
-          <option value="">Select a service</option>
-          <option value="Haircut">Haircut</option>
-          <option value="Beard Shave">Beard Shave</option>
-          <option value="Combo">Combo</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <div class="form-group-m">
-          <label>Date *</label>
-          <input type="date" id="m-date" required>
-        </div>
-        <div class="form-group-m">
-          <label>Time *</label>
-          <select id="m-time" required>
-            <option value="">Select Time</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="12:30">12:30 PM</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="13:30">1:30 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="14:30">2:30 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="15:30">3:30 PM</option>
-            <option value="16:00">4:00 PM</option>
-            <option value="16:30">4:30 PM</option>
-            <option value="17:00">5:00 PM</option>
-            <option value="17:30">5:30 PM</option>
-            <option value="18:00">6:00 PM</option>
-            <option value="18:30">6:30 PM</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group-m">
-        <label>Status</label>
-        <select id="m-status">
-          <option value="pending">Pending</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="done">Done</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-      </div>
-      <div class="form-group-m">
-        <label>Notes</label>
-        <textarea id="m-note" placeholder="Special requests or preferred style..."></textarea>
-      </div>
+    <div class="bnav-item" onclick="switchPage('analytics')" data-bnav="analytics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+        ANALYTICS
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-gold" onclick="closeModal('modal-appt')">CANCEL</button>
-      <button class="btn btn-primary" onclick="saveAppointment()">SAVE</button>
+</nav>
+
+<!-- DELETE MODAL -->
+<div id="modal">
+    <div class="modal-box">
+        <h2>DELETE BOOKING?</h2>
+        <p id="modalMsg">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">CANCEL</button>
+            <button class="btn-confirm-delete" id="btnConfirmDelete">DELETE</button>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MODAL — Confirm Delete
-════════════════════════════════════════════════════ -->
-<div class="modal-overlay" id="modal-del">
-  <div class="modal" style="max-width:380px">
-    <div class="modal-header">
-      <h3>DELETE</h3>
-      <button class="modal-close" onclick="closeModal('modal-del')">✕</button>
-    </div>
-    <div class="modal-body">
-      <p style="font-family:var(--font-body);color:var(--gray);font-size:14px;line-height:1.6;">
-        Are you sure you want to delete <strong id="del-name" style="color:var(--white)"></strong>'s appointment? This cannot be undone.
-      </p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-gold" onclick="closeModal('modal-del')">CANCEL</button>
-      <button class="btn btn-danger" onclick="confirmDelete()">DELETE</button>
-    </div>
-  </div>
-</div>
+<!-- TOAST -->
+<div id="toast"></div>
 
-<!-- TOAST CONTAINER -->
-<div class="toast-wrap" id="toast-wrap"></div>
-
-<!-- ═══════════════════════════════════════════════════
-     SCRIPTS
-════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ═══════════════════════════════════════════════════
-// CONFIG & STATE
-// ═══════════════════════════════════════════════════
-const DEFAULT_CONFIG = {
-  url:   'https://ejnbylyuzzyrmcndflxk.supabase.co',
-  key:   'sb_publishable_1yW9v4QxoUpKiZV6-HTFmg_hacS2CzP',
-  table: 'appointment',
-  adminUser: 'admin',
-  adminPass: 'capital2026'
+// ─── CONFIG ───
+const SUPABASE_URL = "https://ejnbylyuzzyrmcndflxk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_1yW9v4QxoUpKiZV6-HTFmg_hacS2CzP";
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "capital2026";
+const PAGE_SIZE   = 10;
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ─── AUTH ───
+const loginOverlay = document.getElementById("loginOverlay");
+const loginError   = document.getElementById("loginError");
+
+if (sessionStorage.getItem("capitalAdmin") === "1") loginOverlay.style.display = "none";
+
+document.getElementById("btnLogin").onclick = () => {
+    const u = document.getElementById("adminUser").value.trim();
+    const p = document.getElementById("adminPass").value;
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+        sessionStorage.setItem("capitalAdmin", "1");
+        loginOverlay.style.display = "none";
+        fetchAppointments();
+    } else {
+        loginError.style.display = "block";
+        document.getElementById("adminPass").value = "";
+    }
 };
 
-let CONFIG = { ...DEFAULT_CONFIG, ...JSON.parse(localStorage.getItem('tcb_cfg') || '{}') };
-let supabaseClient = null;
+document.getElementById("adminPass").addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("btnLogin").click();
+});
 
-let allAppointments = [];
-let filteredAppointments = [];
+document.getElementById("btnLogout").onclick = () => {
+    sessionStorage.removeItem("capitalAdmin");
+    location.reload();
+};
+
+// ─── NAV ───
+function switchPage(page) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page-" + page).classList.add("active");
+    document.querySelectorAll(".sidebar-link").forEach(l => {
+        l.classList.toggle("active", l.dataset.page === page);
+    });
+    document.querySelectorAll(".bnav-item").forEach(b => {
+        b.classList.toggle("active", b.dataset.bnav === page);
+    });
+    if (page === "analytics") renderAnalytics();
+}
+
+// ─── DATA ───
+let allData = [];
+let filtered = [];
 let currentPage = 1;
-const PAGE_SIZE = 10;
-let sortKey = 'appointment_date';
-let sortDir = 'desc';
 let pendingDeleteId = null;
-let editingId = null;
 
-// ═══════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════
-function initSupabase() {
-  if (CONFIG.url && CONFIG.key) {
-    try {
-      supabaseClient = supabase.createClient(CONFIG.url, CONFIG.key);
-      return true;
-    } catch(e) { return false; }
-  }
-  return false;
+async function fetchAppointments() {
+    document.getElementById("tableBody").innerHTML =
+        '<tr class="loading-row"><td colspan="7">Loading…</td></tr>';
+
+    const { data, error } = await client
+        .from("appointment")
+        .select("*")
+        .order("preferred_time", { ascending: true });
+
+    if (error) { showToast("Error fetching data: " + error.message); return; }
+
+    allData = data || [];
+    updateStats();
+    filterTable();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  updateTopbarDate();
-  setInterval(updateTopbarDate, 60000);
-  document.getElementById('cfg-url').value   = CONFIG.url   || '';
-  document.getElementById('cfg-key').value   = CONFIG.key   || '';
-  document.getElementById('cfg-table').value = CONFIG.table || 'appointment';
-  document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
-  document.getElementById('login-user').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
-});
+// ─── STATS ───
+function updateStats() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const weekLater = new Date();
+    weekLater.setDate(weekLater.getDate() + 7);
 
-function updateTopbarDate() {
-  const d = new Date();
-  document.getElementById('topbar-date').textContent =
-    d.toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+    const today = allData.filter(r => r.preferred_time?.startsWith(todayStr));
+    const week  = allData.filter(r => {
+        const d = new Date(r.preferred_time);
+        return d >= new Date() && d <= weekLater;
+    });
+
+    const svcCount = {};
+    allData.forEach(r => { svcCount[r.service] = (svcCount[r.service] || 0) + 1; });
+    const top = Object.entries(svcCount).sort((a,b) => b[1]-a[1])[0];
+
+    document.getElementById("statTotal").textContent = allData.length;
+    document.getElementById("statToday").textContent = today.length;
+    document.getElementById("statWeek").textContent  = week.length;
+    document.getElementById("statTop").textContent   = top ? top[0] : "—";
 }
 
-// ═══════════════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════════════
-function attemptLogin() {
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value.trim();
-  const err = document.getElementById('login-error');
-  if (u === (CONFIG.adminUser || 'admin') && p === (CONFIG.adminPass || 'capital2026')) {
-    err.style.display = 'none';
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    initSupabase();
-    loadAllData();
-  } else {
-    err.style.display = 'block';
-    document.getElementById('login-pass').value = '';
-  }
+// ─── FILTER ───
+function filterTable() {
+    const q      = document.getElementById("searchInput").value.toLowerCase();
+    const svc    = document.getElementById("serviceFilter").value;
+    const datef  = document.getElementById("dateFilter").value;
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const weekLater = new Date();
+    weekLater.setDate(weekLater.getDate() + 7);
+
+    filtered = allData.filter(r => {
+        const matchQ   = !q || r.name?.toLowerCase().includes(q) || r.contact?.includes(q);
+        const matchSvc = !svc || r.service === svc;
+        let matchDate  = true;
+        if (datef === "today") matchDate = r.preferred_time?.startsWith(todayStr);
+        if (datef === "week")  matchDate = new Date(r.preferred_time) >= new Date() && new Date(r.preferred_time) <= weekLater;
+        if (datef === "upcoming") matchDate = new Date(r.preferred_time) >= new Date();
+        return matchQ && matchSvc && matchDate;
+    });
+
+    currentPage = 1;
+    renderTable();
+    renderPagination();
 }
 
-function doLogout() {
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('login-user').value = '';
-  document.getElementById('login-pass').value = '';
-}
+// ─── TABLE ───
+function renderTable() {
+    const tbody = document.getElementById("tableBody");
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const slice = filtered.slice(start, start + PAGE_SIZE);
 
-// ═══════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════
-function switchView(id, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  const titles = { dashboard:'OVERVIEW', appointments:'APPOINTMENTS', config:'SETTINGS' };
-  document.getElementById('topbar-title').textContent = titles[id] || id.toUpperCase();
-  closeSidebar();
-}
-
-function toggleSidebar() {
-  const s = document.getElementById('sidebar');
-  const o = document.getElementById('sidebar-overlay');
-  s.classList.toggle('open');
-  o.classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
-
-// ═══════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════
-async function loadAllData() {
-  if (!supabaseClient) {
-    renderRecentTable([]);
-    renderAppointmentsTable([]);
-    updateStats([]);
-    toast('Configure Supabase in Settings first.', 'error');
-    return;
-  }
-
-  const tbl = CONFIG.table || 'appointments';
-  try {
-    const { data, error } = await supabaseClient.from(tbl).select('*').order('appointment_date', { ascending: false });
-    if (error) throw error;
-    allAppointments = data || [];
-    filteredAppointments = [...allAppointments];
-    updateStats(allAppointments);
-    renderRecentTable(allAppointments.slice(0,5));
-    applyFilters();
-  } catch(e) {
-    toast('Error loading data: ' + e.message, 'error');
-    renderRecentTable([]);
-    renderAppointmentsTable([]);
-    updateStats([]);
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// STATS
-// ═══════════════════════════════════════════════════
-function updateStats(data) {
-  const today = new Date().toISOString().slice(0,10);
-  const weekAgo = new Date(Date.now() - 7*24*60*60*1000).toISOString().slice(0,10);
-
-  document.getElementById('stat-total').textContent = data.length;
-  document.getElementById('stat-today').textContent = data.filter(r => r.appointment_date === today).length;
-  document.getElementById('stat-pending').textContent = data.filter(r => !r.status || r.status === 'pending').length;
-  document.getElementById('stat-week').textContent = data.filter(r => r.appointment_date >= weekAgo).length;
-}
-
-// ═══════════════════════════════════════════════════
-// RENDER TABLES
-// ═══════════════════════════════════════════════════
-function statusBadge(s) {
-  const map = {
-    pending:   '<span class="badge badge-pending">Pending</span>',
-    confirmed: '<span class="badge badge-confirmed">Confirmed</span>',
-    done:      '<span class="badge badge-done">Done</span>',
-    cancelled: '<span class="badge badge-cancelled">Cancelled</span>',
-  };
-  return map[s] || map['pending'];
-}
-
-function fmtTime(t) {
-  if (!t) return '—';
-  const [h, m] = t.split(':');
-  const hr = parseInt(h);
-  return `${hr > 12 ? hr-12 : hr}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
-}
-
-function renderRecentTable(rows) {
-  const tb = document.getElementById('recent-tbody');
-  if (!rows.length) {
-    tb.innerHTML = `<tr><td colspan="5"><div class="empty-state"><h3>NO DATA</h3><p>No appointments found.</p></div></td></tr>`;
-    return;
-  }
-  tb.innerHTML = rows.map(r => `
-    <tr>
-      <td>${r.name || '—'}</td>
-      <td class="col-hide-mobile">${r.service || '—'}</td>
-      <td>${r.appointment_date || '—'}</td>
-      <td class="col-hide-mobile">${fmtTime(r.appointment_time)}</td>
-      <td>${statusBadge(r.status)}</td>
-    </tr>
-  `).join('');
-}
-
-function renderAppointmentsTable(rows) {
-  const tb = document.getElementById('appointments-tbody');
-  if (!rows.length) {
-    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><h3>NO RESULTS</h3><p>No appointments match your filters.</p></div></td></tr>`;
-    document.getElementById('table-info').textContent = '0 results';
-    document.getElementById('pagination').innerHTML = '';
-    return;
-  }
-
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageRows = rows.slice(start, start + PAGE_SIZE);
-
-  tb.innerHTML = pageRows.map(r => `
-    <tr>
-      <td>${r.name || '—'}</td>
-      <td class="col-hide-mobile">${r.contact || '—'}</td>
-      <td>${r.service || '—'}</td>
-      <td>${r.appointment_date || '—'}</td>
-      <td class="col-hide-mobile">${fmtTime(r.appointment_time)}</td>
-      <td>${statusBadge(r.status)}</td>
-      <td>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <button class="btn btn-gold btn-sm" onclick="openEditModal(${r.id})">EDIT</button>
-          <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${r.id},'${(r.name||'').replace(/'/g,"\\'")}')">DEL</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-
-  document.getElementById('table-info').textContent =
-    `Showing ${start+1}–${Math.min(start+PAGE_SIZE, rows.length)} of ${rows.length}`;
-
-  renderPagination(rows.length);
-}
-
-function renderPagination(total) {
-  const pages = Math.ceil(total / PAGE_SIZE);
-  const pg = document.getElementById('pagination');
-  let html = '';
-  if (currentPage > 1) html += `<button class="page-btn" onclick="goPage(${currentPage-1})">‹</button>`;
-  for (let i = 1; i <= pages; i++) {
-    if (pages > 7 && i > 3 && i < pages - 2 && Math.abs(i - currentPage) > 1) { if (i === 4) html += `<span class="page-btn" style="cursor:default">…</span>`; continue; }
-    html += `<button class="page-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
-  }
-  if (currentPage < pages) html += `<button class="page-btn" onclick="goPage(${currentPage+1})">›</button>`;
-  pg.innerHTML = html;
-}
-
-function goPage(p) { currentPage = p; renderAppointmentsTable(filteredAppointments); }
-
-// ═══════════════════════════════════════════════════
-// FILTER & SORT
-// ═══════════════════════════════════════════════════
-function applyFilters() {
-  const search = (document.getElementById('search-input').value||'').toLowerCase();
-  const service = document.getElementById('filter-service').value;
-  const status  = document.getElementById('filter-status').value;
-
-  filteredAppointments = allAppointments.filter(r => {
-    if (search && !(r.name||'').toLowerCase().includes(search)) return false;
-    if (service && r.service !== service) return false;
-    if (status  && (r.status||'pending') !== status) return false;
-    return true;
-  });
-
-  filteredAppointments.sort((a, b) => {
-    const av = (a[sortKey]||'').toString().toLowerCase();
-    const bv = (b[sortKey]||'').toString().toLowerCase();
-    return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  currentPage = 1;
-  renderAppointmentsTable(filteredAppointments);
-}
-
-function filterTable() { applyFilters(); }
-
-function sortTable(key) {
-  if (sortKey === key) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  else { sortKey = key; sortDir = 'asc'; }
-  applyFilters();
-}
-
-// ═══════════════════════════════════════════════════
-// MODALS
-// ═══════════════════════════════════════════════════
-function openAddModal() {
-  editingId = null;
-  document.getElementById('modal-title').textContent = 'ADD APPOINTMENT';
-  document.getElementById('modal-id').value = '';
-  ['m-name','m-contact','m-note'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('m-service').value = '';
-  document.getElementById('m-time').value = '';
-  document.getElementById('m-status').value = 'pending';
-  document.getElementById('m-date').value = new Date().toISOString().slice(0,10);
-  openModal('modal-appt');
-}
-
-function openEditModal(id) {
-  const r = allAppointments.find(a => a.id === id);
-  if (!r) return;
-  editingId = id;
-  document.getElementById('modal-title').textContent = 'EDIT APPOINTMENT';
-  document.getElementById('modal-id').value = id;
-  document.getElementById('m-name').value     = r.name    || '';
-  document.getElementById('m-contact').value  = r.contact || '';
-  document.getElementById('m-service').value  = r.service || '';
-  document.getElementById('m-date').value     = r.appointment_date || '';
-  document.getElementById('m-time').value     = r.appointment_time || '';
-  document.getElementById('m-status').value   = r.status  || 'pending';
-  document.getElementById('m-note').value     = r.note    || '';
-  openModal('modal-appt');
-}
-
-function openDeleteModal(id, name) {
-  pendingDeleteId = id;
-  document.getElementById('del-name').textContent = name;
-  openModal('modal-del');
-}
-
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-// ═══════════════════════════════════════════════════
-// CRUD
-// ═══════════════════════════════════════════════════
-async function saveAppointment() {
-  if (!supabaseClient) { toast('Configure Supabase first.', 'error'); return; }
-
-  const name    = document.getElementById('m-name').value.trim();
-  const contact = document.getElementById('m-contact').value.trim();
-  const service = document.getElementById('m-service').value;
-  const date    = document.getElementById('m-date').value;
-  const time    = document.getElementById('m-time').value;
-  const status  = document.getElementById('m-status').value;
-  const note    = document.getElementById('m-note').value.trim();
-
-  if (!name || !contact || !service || !date || !time) {
-    toast('Please fill all required fields.', 'error'); return;
-  }
-
-  const payload = { name, contact, service, appointment_date: date, appointment_time: time, status, note };
-  const tbl = CONFIG.table || 'appointments';
-
-  try {
-    let error;
-    if (editingId) {
-      ({ error } = await supabaseClient.from(tbl).update(payload).eq('id', editingId));
-    } else {
-      ({ error } = await supabaseClient.from(tbl).insert([payload]));
+    if (!slice.length) {
+        tbody.innerHTML = `<tr class="loading-row"><td colspan="7">No appointments found.</td></tr>`;
+        return;
     }
-    if (error) throw error;
-    closeModal('modal-appt');
-    toast(editingId ? 'Appointment updated.' : 'Appointment added.', 'success');
-    await loadAllData();
-  } catch(e) {
-    toast('Error: ' + e.message, 'error');
-  }
+
+    tbody.innerHTML = slice.map((r, i) => {
+        const dt = r.preferred_time ? new Date(r.preferred_time) : null;
+        const dateStr = dt ? dt.toLocaleDateString("en-PH", { month:"short", day:"numeric", year:"numeric" }) : "—";
+        const timeStr = dt ? dt.toLocaleTimeString("en-PH", { hour:"2-digit", minute:"2-digit" }) : "";
+        const note = r.note ? (r.note.length > 30 ? r.note.slice(0,30)+"…" : r.note) : <span style="color:#444">—</span>;
+        return `<tr>
+            <td style="color:#555">${start + i + 1}</td>
+            <td class="td-name">${esc(r.name) || "—"}</td>
+            <td>${esc(r.contact) || "—"}</td>
+            <td><span class="td-service">${esc(r.service) || "—"}</span></td>
+            <td class="td-time">
+                <div class="td-date-badge">
+                    <span class="td-date-main">${dateStr}</span>
+                    <span class="td-date-time">${timeStr}</span>
+                </div>
+            </td>
+            <td title="${esc(r.note) || ""}">${note}</td>
+            <td><button class="btn-delete" onclick="confirmDelete(${r.id}, '${esc(r.name)}')">DEL</button></td>
+        </tr>`;
+    }).join("");
 }
 
-async function confirmDelete() {
-  if (!supabaseClient || !pendingDeleteId) return;
-  const tbl = CONFIG.table || 'appointments';
-  try {
-    const { error } = await supabaseClient.from(tbl).delete().eq('id', pendingDeleteId);
-    if (error) throw error;
-    closeModal('modal-del');
-    toast('Appointment deleted.', 'success');
+function esc(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ─── PAGINATION ───
+function renderPagination() {
+    const total = Math.ceil(filtered.length / PAGE_SIZE);
+    const pag   = document.getElementById("pagination");
+    if (total <= 1) { pag.innerHTML = ""; return; }
+
+    let html = `<span>${filtered.length} results</span>`;
+    html += `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`;
+    for (let p = 1; p <= total; p++) {
+        html += `<button class="page-btn ${p===currentPage?"current":""}" onclick="goPage(${p})">${p}</button>`;
+    }
+    html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?"disabled":""}>›</button>`;
+    pag.innerHTML = html;
+}
+
+function goPage(p) {
+    const total = Math.ceil(filtered.length / PAGE_SIZE);
+    if (p < 1 || p > total) return;
+    currentPage = p;
+    renderTable();
+    renderPagination();
+}
+
+// ─── DELETE ───
+function confirmDelete(id, name) {
+    pendingDeleteId = id;
+    document.getElementById("modalMsg").textContent = `Delete appointment for "${name}"? This cannot be undone.`;
+    document.getElementById("modal").classList.add("open");
+}
+
+document.getElementById("btnConfirmDelete").onclick = async () => {
+    if (!pendingDeleteId) return;
+    const { error } = await client.from("appointment").delete().eq("id", pendingDeleteId);
+    closeModal();
+    if (error) { showToast("Delete failed: " + error.message); return; }
+    showToast("Appointment deleted.");
+    fetchAppointments();
+};
+
+function closeModal() {
+    document.getElementById("modal").classList.remove("open");
     pendingDeleteId = null;
-    await loadAllData();
-  } catch(e) {
-    toast('Error: ' + e.message, 'error');
-  }
 }
 
-// ═══════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════
-function saveConfig() {
-  CONFIG.url   = document.getElementById('cfg-url').value.trim();
-  CONFIG.key   = document.getElementById('cfg-key').value.trim();
-  CONFIG.table = document.getElementById('cfg-table').value.trim() || 'appointments';
-  localStorage.setItem('tcb_cfg', JSON.stringify(CONFIG));
-  initSupabase();
-  toast('Configuration saved.', 'success');
-}
-
-async function testConnection() {
-  saveConfig();
-  if (!supabaseClient) { toast('Invalid config.', 'error'); return; }
-  try {
-    const { error } = await supabaseClient.from(CONFIG.table || 'appointments').select('id').limit(1);
-    if (error) throw error;
-    toast('Connection successful!', 'success');
-  } catch(e) {
-    toast('Connection failed: ' + e.message, 'error');
-  }
-}
-
-function saveAdminCreds() {
-  const u = document.getElementById('cfg-admin-user').value.trim();
-  const p = document.getElementById('cfg-admin-pass').value.trim();
-  if (u) CONFIG.adminUser = u;
-  if (p) CONFIG.adminPass = p;
-  localStorage.setItem('tcb_cfg', JSON.stringify(CONFIG));
-  toast('Credentials updated.', 'success');
-}
-
-// ═══════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════
-function toast(msg, type = 'info') {
-  const wrap = document.getElementById('toast-wrap');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), 3100);
-}
-
-// close modals on overlay click
-document.querySelectorAll('.modal-overlay').forEach(o => {
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+document.getElementById("modal").addEventListener("click", e => {
+    if (e.target === document.getElementById("modal")) closeModal();
 });
+
+// ─── ANALYTICS ───
+function renderAnalytics() {
+    const svc = { Haircut: 0, "Beard Shave": 0, Combo: 0 };
+    const hourCount = {};
+
+    allData.forEach(r => {
+        if (svc[r.service] !== undefined) svc[r.service]++;
+        if (r.preferred_time) {
+            const h = new Date(r.preferred_time).getHours();
+            hourCount[h] = (hourCount[h] || 0) + 1;
+        }
+    });
+
+    document.getElementById("aHaircut").textContent = svc["Haircut"];
+    document.getElementById("aBeard").textContent   = svc["Beard Shave"];
+    document.getElementById("aCombo").textContent   = svc["Combo"];
+
+    const peakHour = Object.entries(hourCount).sort((a,b)=>b[1]-a[1])[0];
+    if (peakHour) {
+        const h = parseInt(peakHour[0]);
+        const label = h < 12 ? `${h}:00 AM` : h === 12 ? "12:00 PM" : `${h-12}:00 PM`;
+        document.getElementById("aPeak").textContent = label;
+    } else {
+        document.getElementById("aPeak").textContent = "—";
+    }
+
+    const total = Object.values(svc).reduce((a,b)=>a+b,0) || 1;
+    const barChart = document.getElementById("barChart");
+    barChart.innerHTML = Object.entries(svc).map(([name, count]) => {
+        const pct = Math.round(count / total * 100);
+        return `<div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;">
+                <span style="font-family:var(--font-primary);letter-spacing:1px;font-size:1rem;">${name}</span>
+                <span style="font-family:var(--font-body);font-size:0.8rem;color:var(--gold);">${count} (${pct}%)</span>
+            </div>
+            <div style="background:#2a2a2a;border-radius:4px;height:10px;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;background:linear-gradient(to right,var(--red),var(--gold));border-radius:4px;transition:width 0.8s ease;"></div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+// ─── INIT ───
+if (sessionStorage.getItem("capitalAdmin") === "1") fetchAppointments();
 </script>
 </body>
 </html>
