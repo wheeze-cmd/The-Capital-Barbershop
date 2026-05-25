@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/terrago",
-      "destination": "https://portfolio-website-kappa-two-44.vercel.app"
+      "destination": "https://portfolio-website-kappa-two-44.vercel.app/index.html"
     },
     {
       "source": "/terrago/:path*",
