@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | The Capital Barbershop</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0d0d0d;
+            color: white;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .title h1 {
+            font-size: 40px;
+        }
+
+        .title p {
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .stats {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 200px;
+        }
+
+        .stats p {
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .stats h2 {
+            font-size: 40px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: #1a1a1a;
+            border-radius: 20px;
+            border: 1px solid #2a2a2a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        thead {
+            background: #111;
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        th {
+            color: #ccc;
+        }
+
+        tr:hover {
+            background: #222;
+        }
+
+        .service {
+            background: rgba(255, 196, 0, 0.1);
+            color: #ffc400;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+        }
+
+        .status {
+            background: rgba(0, 255, 106, 0.1);
+            color: #00ff6a;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="title">
+                <h1>The Capital Barbershop</h1>
+                <p>Admin Dashboard</p>
+            </div>
+
+            <div class="stats">
+                <p>Total Reservations</p>
+                <h2 id="totalBookings">0</h2>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bookingTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-note">
+            Reservation cancellation is disabled.
+        </div>
+
+    </div>
+
+    <script>
+    const supabaseUrl = "https://ejnbylyuzzyrmcndflxk.supabase.co";
+    const supabaseKey = "sb_publishable_1yW9v4QxoUpKiZV6-HTFmg_hacS2CzP";
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function fetchAppointments() {
+
+            const { data, error } = await supabase
+                .from('appointments')
+                .select('*')
+                .order('appointment_date', { ascending: true });
+
+            if (error) {
+                console.log(error);
+                return;
+            }
+
+            const table = document.getElementById('bookingTable');
+            const total = document.getElementById('totalBookings');
+
+            total.innerText = data.length;
+
+            table.innerHTML = '';
+
+            data.forEach(appointment => {
+
+                table.innerHTML += `
+                    <tr>
+                        <td>${appointment.customer_name}</td>
+                        <td>${appointment.contact_number}</td>
+                        <td>
+                            <span class="service">
+                                ${appointment.service}
+                            </span>
+                        </td>
+                        <td>${appointment.appointment_date}</td>
+                        <td>${appointment.appointment_time}</td>
+                        <td>${appointment.notes || '-'}</td>
+                        <td>
+                            <span class="status">
+                                ${appointment.status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        fetchAppointments();
+    </script>
+
+</body>
+</html>
