@@ -163,7 +163,7 @@
         async function fetchAppointments() {
 
             const { data, error } = await supabase
-                .from('appointments')
+                .from('appointment')
                 .select('*')
                 .order('appointment_date', { ascending: true });
 
