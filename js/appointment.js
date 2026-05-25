@@ -34,6 +34,16 @@ form.addEventListener("submit", async (e) => {
     // 🔥 COMBINE DATE + TIME
     const normalizedTime = `${selectedDate}T${selectedTime}`;
 
+    // 🚫 BLOCK PAST TIME FOR TODAY
+    const now = new Date();
+
+    const bookingDateTime = new Date(normalizedTime);
+
+    if (bookingDateTime < now) {
+        alert("You cannot select a past time");
+        return;
+    }
+
     // 📦 FORM DATA
     const data = {
         name: document.getElementById("name").value,
