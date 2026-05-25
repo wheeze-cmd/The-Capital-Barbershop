@@ -986,7 +986,9 @@ function renderTable() {
         const dt = r.preferred_time ? new Date(r.preferred_time) : null;
         const dateStr = dt ? dt.toLocaleDateString("en-PH", { month:"short", day:"numeric", year:"numeric" }) : "—";
         const timeStr = dt ? dt.toLocaleTimeString("en-PH", { hour:"2-digit", minute:"2-digit" }) : "";
-        const note = r.note ? (r.note.length > 30 ? r.note.slice(0,30)+"…" : r.note) : <span style="color:#444">—</span>;
+        const note = r.note
+            ? (r.note.length > 30 ? r.note.slice(0,30) + "…" : r.note)
+            : '<span style="color:#444">—</span>';
         return `<tr>
             <td style="color:#555">${start + i + 1}</td>
             <td class="td-name">${esc(r.name) || "—"}</td>
