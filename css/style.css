@@ -390,6 +390,7 @@ header {
 .price{
     color: var(--gold);
     margin-top: 1rem;
+    margin-bottom: 1rem;
     font-size: 2rem;
 }
 
